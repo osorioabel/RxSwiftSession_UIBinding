@@ -38,7 +38,7 @@ class SectionedTableViewAnimatedViewController: UIViewController {
         let dataSource = RxTableViewSectionedAnimatedDataSource<AnimatedSectionModel>(
             configureCell: { dataSource, tableView, indexPath, item in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-                cell.textLabel!.text = item
+                cell.textLabel?.text = item
                 return cell
         })
 

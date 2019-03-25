@@ -56,7 +56,7 @@ class SectionedTableViewReloadViewController: UIViewController {
                 guard let self = self else { return }
                 self.data.value += [SectionModel(model: "Section \(self.data.value.count + 1)",
                     items: ReloadDataSource.allCases)]
-        }).disposed(by: disposeBag)
+            }).disposed(by: disposeBag)
     }
 
 }
