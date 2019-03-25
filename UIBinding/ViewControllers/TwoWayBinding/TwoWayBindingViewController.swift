@@ -56,13 +56,13 @@ class TwoWayBindingViewController: UIViewController {
         leftTextField.rx.text <-> viewModel.textFieldText
         rightTextField.rx.text <-> viewModel.textFieldText
 
-        button.rx.tap.asObservable()
-            .subscribe(onNext: { [weak self] in
+        button.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
                 self?.viewModel.textFieldText.accept("\(Date())")
         }).disposed(by: disposeBag)
 
-        resetBarButtonItem.rx.tap.asObservable()
-            .subscribe(onNext: { [weak self] _ in
+        resetBarButtonItem.rx.tap.asDriver()
+            .drive(onNext: { [weak self] _ in
                 self?.viewModel.textFieldText.accept( "Hello")
                 self?.viewModel.textViewText.accept("Lorem ipsum dolor...")
         }).disposed(by: disposeBag)

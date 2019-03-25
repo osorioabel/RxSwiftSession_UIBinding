@@ -58,8 +58,8 @@ class SectionedTableViewAnimatedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        data.asObservable()
-            .bind(to: tableView.rx.items(dataSource: dataSource))
+        data.asDriver()
+            .drive(tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
 
         addBarButtonItem.rx.tap.asDriver()

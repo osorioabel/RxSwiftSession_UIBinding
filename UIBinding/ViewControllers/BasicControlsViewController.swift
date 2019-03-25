@@ -49,74 +49,74 @@ class BasicControlsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        textField.rx.text.asObservable()
-            .bind(to: textFieldLabel.rx.text)
+        textField.rx.text.asDriver()
+            .drive(textFieldLabel.rx.text)
             .disposed(by: disposeBag)
 
-        textField.rx.text.asObservable()
-            .subscribe(onNext: { [weak self] _ in
+        textField.rx.text.asDriver()
+            .drive(onNext: { [weak self] _ in
                 UIView.animate(withDuration: 0.3) { self?.view.layoutIfNeeded() }
         }).disposed(by: disposeBag)
 
-        textView.rx.text.asObservable()
+        textView.rx.text.asDriver()
             .map { return "Character count: \($0?.count ?? 0)"}
-            .bind(to: self.textViewLabel.rx.text)
+            .drive(self.textViewLabel.rx.text)
             .disposed(by: disposeBag)
 
-        button.rx.tap.asObservable()
-            .subscribe(onNext: { [weak self] _ in
+        button.rx.tap.asDriver()
+            .drive(onNext: { [weak self] _ in
                 self?.buttonLabel.text! += "Tapped. "
                 self?.view.endEditing(true)
                 UIView.animate(withDuration: 0.3) { self?.view.layoutIfNeeded() }
             }).disposed(by: disposeBag)
 
-        segmentedControl.rx.value.asObservable()
+        segmentedControl.rx.value.asDriver()
             .skip(skip)
-            .subscribe(onNext: { [weak self] value in
+            .drive(onNext: { [weak self] value in
                 self?.segmentedControlLabel.text = "Selected segment: \(value)"
                 UIView.animate(withDuration: 0.3) { self?.view.layoutIfNeeded() }
         }).disposed(by: disposeBag)
 
-        slider.rx.value.asObservable()
-            .subscribe(onNext: { [weak self] in
+        slider.rx.value.asDriver()
+            .drive(onNext: { [weak self] in
                 self?.sliderLabel.text = "Slider value: \($0)"
         }).disposed(by: disposeBag)
 
-        slider.rx.value.asObservable()
-            .subscribe(onNext: { [weak self] in
+        slider.rx.value.asDriver()
+            .drive(onNext: { [weak self] in
                 self?.progressView.progress = $0
         }).disposed(by: disposeBag)
 
-        `switch`.rx.value.asObservable()
+        `switch`.rx.value.asDriver()
             .map { !$0 }
-            .bind(to: activityIndicator.rx.isHidden)
+            .drive(activityIndicator.rx.isHidden)
             .disposed(by: disposeBag)
 
-        `switch`.rx.value.asObservable()
-            .bind(to: activityIndicator.rx.isAnimating)
+        `switch`.rx.value.asDriver()
+            .drive(activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
 
-        stepper.rx.value.asObservable()
+        stepper.rx.value.asDriver()
             .map { String(Int($0)) }
-            .subscribe(onNext: { [weak self] in
+            .drive(onNext: { [weak self] in
                 self?.stepperLabel.text = $0
         }).disposed(by: disposeBag)
 
-        tapGestureRecognizer.rx.event.asObservable()
-            .subscribe(onNext: { [weak self] _ in
+        tapGestureRecognizer.rx.event.asDriver()
+            .drive(onNext: { [weak self] _ in
                 self?.view.endEditing(true)
         }).disposed(by: disposeBag)
 
-        datePicker.rx.date.asObservable()
+        datePicker.rx.date.asDriver()
             .map { [weak self] in
                 self?.dateFormatter.string(from: $0) ?? ""
             }
-            .subscribe(onNext: { [weak self] in
+            .drive(onNext: { [weak self] in
                 self?.datePickerLabel.text = "Selected date: \($0)"
         }).disposed(by: disposeBag)
 
-        resetBarButtonItem.rx.tap.asObservable()
-            .subscribe(onNext: { [weak self] _ in
+        resetBarButtonItem.rx.tap.asDriver()
+            .drive(onNext: { [weak self] _ in
                 self?.resetUI()
         }).disposed(by: disposeBag)
     }

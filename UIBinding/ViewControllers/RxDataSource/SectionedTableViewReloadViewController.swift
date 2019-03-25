@@ -46,7 +46,6 @@ class SectionedTableViewReloadViewController: UIViewController {
     let disposeBag = DisposeBag()
 
     // MARK: - View life cycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -56,16 +55,16 @@ class SectionedTableViewReloadViewController: UIViewController {
             return cell
         }
 
-        data.asObservable()
-            .bind(to: tableView.rx.items(dataSource: dataSource))
+        data.asDriver()
+            .drive(tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
 
-        addBarButtonItem.rx.tap.asObservable()
-            .subscribe(onNext: { [weak self] _ in
+        addBarButtonItem.rx.tap.asDriver()
+            .drive(onNext: { [weak self] _ in
                 guard let strongSelf = self else { return }
                 strongSelf.data.value += [SectionModel(model: "Section \(strongSelf.data.value.count + 1)",
                     items: ReloadDataSource.allCases)]
-            }).disposed(by: disposeBag)
+        }).disposed(by: disposeBag)
     }
 
 }
