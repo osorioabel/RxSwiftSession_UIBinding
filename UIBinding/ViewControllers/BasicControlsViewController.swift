@@ -49,76 +49,44 @@ class BasicControlsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        textField.rx.text.asDriver()
-            .drive(textFieldLabel.rx.text)
-            .disposed(by: disposeBag)
+        // TODO: - Bind textField to textFieldLabel text
 
-        textField.rx.text.asDriver()
-            .drive(onNext: { [weak self] _ in
-                UIView.animate(withDuration: 0.3) { self?.view.layoutIfNeeded() }
-        }).disposed(by: disposeBag)
 
-        textView.rx.text.asDriver()
-            .map { return "Character count: \($0?.count ?? 0)"}
-            .drive(self.textViewLabel.rx.text)
-            .disposed(by: disposeBag)
+        // TODO: - layoutIfNeeded to show the label
 
-        button.rx.tap.asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.buttonLabel.text! += "Tapped. "
-                self?.view.endEditing(true)
-                UIView.animate(withDuration: 0.3) { self?.view.layoutIfNeeded() }
-            }).disposed(by: disposeBag)
 
-        segmentedControl.rx.value.asDriver()
-            .skip(skip)
-            .drive(onNext: { [weak self] value in
-                self?.segmentedControlLabel.text = "Selected segment: \(value)"
-                UIView.animate(withDuration: 0.3) { self?.view.layoutIfNeeded() }
-        }).disposed(by: disposeBag)
+        // TODO: - bind textView text to textViewLabel to show character count
 
-        slider.rx.value.asDriver()
-            .drive(onNext: { [weak self] in
-                self?.sliderLabel.text = "Slider value: \($0)"
-        }).disposed(by: disposeBag)
 
-        slider.rx.value.asDriver()
-            .drive(onNext: { [weak self] in
-                self?.progressView.progress = $0
-        }).disposed(by: disposeBag)
+        // TODO: - bind tap action and update buttonLabel
 
-        `switch`.rx.value.asDriver()
-            .map { !$0 }
-            .drive(activityIndicator.rx.isHidden)
-            .disposed(by: disposeBag)
 
-        `switch`.rx.value.asDriver()
-            .drive(activityIndicator.rx.isAnimating)
-            .disposed(by: disposeBag)
+        // TODO: - bind segmentedControl to segmentedControlLabel to see the selectedValue
 
-        stepper.rx.value.asDriver()
-            .map { String(Int($0)) }
-            .drive(onNext: { [weak self] in
-                self?.stepperLabel.text = $0
-        }).disposed(by: disposeBag)
 
-        tapGestureRecognizer.rx.event.asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.view.endEditing(true)
-        }).disposed(by: disposeBag)
+        // TODO: - bind slider to sliderLabel to see the value
 
-        datePicker.rx.date.asDriver()
-            .map { [weak self] in
-                self?.dateFormatter.string(from: $0) ?? ""
-            }
-            .drive(onNext: { [weak self] in
-                self?.datePickerLabel.text = "Selected date: \($0)"
-        }).disposed(by: disposeBag)
 
-        resetBarButtonItem.rx.tap.asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.resetUI()
-        }).disposed(by: disposeBag)
+        // TODO: - bind slider to progressView to see the value
+        // TODO: - demostrate differences with asObservable()
+
+
+
+        // TODO: - bind switch with activityIndicator is hidden
+
+        // TODO: - bind switch with activityIndicator is isAnimating
+
+        // TODO: - bind stepper with stepperLabel is text
+
+
+        // TODO: - bind tapGestureRecognizer with endEditing
+
+
+        // TODO: - bind datePicker datePickerLabel
+
+
+        // TODO: - bind resetBarButtonItem tap with funcion
+        
     }
 
     // MARK: - Helpers
