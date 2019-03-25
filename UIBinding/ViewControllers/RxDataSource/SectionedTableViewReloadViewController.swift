@@ -29,7 +29,7 @@ class SectionedTableViewReloadViewController: UIViewController {
         let dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String, ReloadDataSource>>(
             configureCell: { _, tableView, indexPath, dataSourceItem in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-                cell.textLabel!.text = dataSourceItem.rawValue
+                cell.textLabel?.text = dataSourceItem.rawValue
                 return cell
         })
 
@@ -39,9 +39,7 @@ class SectionedTableViewReloadViewController: UIViewController {
         return dataSource
     }()
 
-    let data = Variable([
-        SectionModel(model: "Section 1", items: ReloadDataSource.allCases)
-        ])
+    let data = Variable([SectionModel(model: "Section 1", items: ReloadDataSource.allCases)])
 
     let disposeBag = DisposeBag()
 
@@ -49,20 +47,14 @@ class SectionedTableViewReloadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dataSource.configureCell = { _, tableView, indexPath, dataSourceItem in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-            cell.textLabel!.text = dataSourceItem.rawValue
-            return cell
-        }
-
         data.asDriver()
             .drive(tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
 
         addBarButtonItem.rx.tap.asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let strongSelf = self else { return }
-                strongSelf.data.value += [SectionModel(model: "Section \(strongSelf.data.value.count + 1)",
+                guard let self = self else { return }
+                self.data.value += [SectionModel(model: "Section \(self.data.value.count + 1)",
                     items: ReloadDataSource.allCases)]
         }).disposed(by: disposeBag)
     }
